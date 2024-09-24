@@ -22,13 +22,14 @@ def set_value(napis_przed_input, row, domyslna_wartosc):
 
 def zapisz_wartosci():
     # 1 postać
-    player_character = Character
-    player_character.name = fields['name'].get()  # Pobieramy wartość z pola tekstowego
-    player_character.picURL = fields['picURL'].get()
-    player_character.hp_player = fields['hp'].get()
-    player_character.attack_player = fields['attack'].get()
-    player_character.defense_player = fields['defense'].get()
+    player_character1 = Character
+    player_character1.name = fields['name'].get()  # Pobieramy wartość z pola tekstowego
+    player_character1.picURL = fields['picURL'].get()
+    player_character1.hp_player = fields['hp'].get()
+    player_character1.attack_player = fields['attack'].get()
+    player_character1.defense_player = fields['defense'].get()
     # 2 postać
+    otworz_drugie_okno(player_character1)
     player_character2 = Character
     player_character2.name = fields['name2'].get()  # Pobieramy wartość z pola tekstowego
     player_character2.picURL = fields['picURL2'].get()
@@ -36,7 +37,6 @@ def zapisz_wartosci():
     player_character2.attack_player = fields['attack2'].get()
     player_character2.defense_player = fields['defense2'].get()
 
-    otworz_drugie_okno(player_character)
 
 
 
