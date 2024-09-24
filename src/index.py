@@ -1,34 +1,49 @@
 import tkinter as tk
-from tkinter import messagebox
-
-
-def shown_chosen_name():
-    character_name = entry.get()
-    if character_name.strip() == "":
-        messagebox.showerror("Error", "Name must be chosen")
-    else:
-        input_character_name.config(text=f"You will be {character_name}")
-
-
+from battle_interface import otworz_drugie_okno
+from src.models.character_model import Character
 
 interface = tk.Tk()
-
 interface.title('Interface')
 interface.geometry('800x500')
+fields = {}
 
-label = tk.Label(interface, text="Weclome to the FirstFight", font=("Arial", 16))
+def set_value(napis_przed_input, row):
+    label = tk.Label(interface, text=napis_przed_input, font=("Arial", 16))
+    label.grid(row=row, column=1, padx=10, pady=10)
+
+    entry = tk.Entry(interface, font=("Arial", 14))
+    entry.grid(row=row, column=2, padx=10, pady=10)
+
+    return entry
+
+def zapisz_wartosci():
+    player_character = Character
+    player_character.name = fields['name'].get()  # Pobieramy wartość z pola tekstowego
+    player_character.picURL = fields['picURL'].get()
+    player_character.hp_player = fields['hp'].get()
+    player_character.attack_player = fields['attack'].get()
+    player_character.defense_player = fields['defense'].get()
+
+    otworz_drugie_okno(player_character)
+
+
+
+######################## Definicja ekranu
+
+label = tk.Label(interface, text="Welcome to the FirstFight", font=("Arial", 16))
 label.grid(row=0, column=2, padx=10, pady=10)
 
-label = tk.Label(interface, text="Chose name of your character!", font=("Arial", 16))
-label.grid(row=1, column=1, padx=10, pady=10)
 
-entry = tk.Entry(interface, font =("Arial", 14))
-entry.grid(row=1, column=2, padx=10, pady=10)
+fields['name'] = set_value('Podaj imie postaci: ', 2)
+fields['picURL'] = set_value('Podaj URL zdjęcia postaci: ', 3)
+fields['hp'] = set_value('Podaj życie postaci: ', 4)
+fields['attack'] = set_value('Podaj moc ataku postaci: ', 5)
+fields['defense'] = set_value("Podaj punkty obrony postaci: ", 6)
 
-button = tk.Button(interface, text="ready", font=("Arial", 14), command=shown_chosen_name)
-button.grid(row=1, column=3, padx=10, pady=10)
+button = tk.Button(interface, text="zaprezentuj postać", command=zapisz_wartosci)
+button.grid(row=7, column=2, pady=20)
 
-input_character_name = tk.Label(interface, text="", font=("Arial", 14))
-input_character_name.grid(row=2, column=1, padx=10, pady=10)
+
+
 
 interface.mainloop()
