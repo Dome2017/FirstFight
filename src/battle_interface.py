@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from io import BytesIO
 from src.models.character_model import Character
 
+
 def otworz_drugie_okno(postac1: Character):
     ekran2 = tk.Toplevel()
     ekran2.title("Drugie okno")
