@@ -1,4 +1,5 @@
 import tkinter as tk
+import random
 from battle_interface import otworz_drugie_okno
 from src.models.character_model import Character
 
@@ -53,12 +54,16 @@ fields['defense'] = set_value("Podaj punkty obrony postaci: ", 6, 20)
 # napis sygnalizujący tworzenie 2 postaci
 label = tk.Label(interface, text="Druga postać", font=("Arial", 16))
 label.grid(row=7, column=2, padx=10, pady=10)
+# możliwe random wartości dla statystyk drugiej postaci
+postac2_random_hp = random.randint(80,200)
+postac2_random_attack = random.randint(5,50)
+postac2_random_defense = random.randint(5,50)
 # pola tekstowe zapisu dla postaci nr 2
-fields['name2'] = set_value('Podaj imie postaci: ', 8, '')
-fields['picURL2'] = set_value('Podaj URL zdjęcia postaci: ', 9, '')
-fields['hp2'] = set_value('Podaj życie postaci: ', 10, '')
-fields['attack2'] = set_value('Podaj moc ataku postaci: ', 11, '')
-fields['defense2'] = set_value("Podaj punkty obrony postaci: ", 12, '')
+fields['name2'] = set_value('Podaj imie postaci: ', 8, 'Postać 2')
+fields['picURL2'] = set_value('Podaj URL zdjęcia postaci: ', 9, 'URL do obrazu dla postaci 2')
+fields['hp2'] = set_value('Podaj życie postaci: ', 10, postac2_random_hp)
+fields['attack2'] = set_value('Podaj moc ataku postaci: ', 11, postac2_random_attack)
+fields['defense2'] = set_value("Podaj punkty obrony postaci: ", 12, postac2_random_defense)
 # przycisk otwarcia drugiego okna
 button = tk.Button(interface, text="zaprezentuj postacie", command=zapisz_wartosci)
 button.grid(row=14, column=2, pady=20)
