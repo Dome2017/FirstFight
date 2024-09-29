@@ -15,8 +15,7 @@ def set_value(napis_przed_input, row, domyslna_wartosc):
     entry = tk.Entry(interface, font=("Arial", 14))
     entry.grid(row=row, column=2, padx=10, pady=10)
     # Ustawienie domyślnej wartości
-    if domyslna_wartosc is not None:
-        entry.insert(0, str(domyslna_wartosc))
+    entry.insert(0, str(domyslna_wartosc))
 
     return entry
 
