@@ -64,7 +64,7 @@ fields['hp2'] = set_value('Podaj życie postaci: ', 10, postac2_random_hp)
 fields['attack2'] = set_value('Podaj moc ataku postaci: ', 11, postac2_random_attack)
 fields['defense2'] = set_value("Podaj punkty obrony postaci: ", 12, postac2_random_defense)
 # przycisk otwarcia drugiego okna
-button = tk.Button(interface, text="zaprezentuj postacie", command=zapisz_wartosci)
+button = tk.Button(interface, text="Start Game", command=zapisz_wartosci)
 button.grid(row=14, column=2, pady=20)
 
 

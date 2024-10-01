@@ -17,8 +17,8 @@ def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
     ekran2.geometry("800x1000")
 
     def aktualizuj_hp_label():
-        label_health1.config(text=f"Twoje życie: {postac1.hp_player}")
-        label_health2.config(text=f"Twoje życie: {postac2.hp_player}")
+        label_health1.config(text=f"Health: {postac1.hp_player}")
+        label_health2.config(text=f"Health: {postac2.hp_player}")
 
     def oblicz_obrażenia(atakujacy, obronca):
         global is_defending
@@ -81,9 +81,9 @@ def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
     label_stats2 = tk.Label(ekran2, text="Player 2 Statistics:", font=("Arial", 14))
     label_stats2.grid(row=2, column=4, padx=10, pady=10)
 
-    label_health1 = tk.Label(ekran2, text=f"Your health: {postac1.hp_player}", font=("Arial", 14))
+    label_health1 = tk.Label(ekran2, text=f"Health: {postac1.hp_player}", font=("Arial", 14))
     label_health1.grid(row=3, column=1, padx=10, pady=10)
-    label_health2 = tk.Label(ekran2, text=f"Your health: {postac2.hp_player}", font=("Arial", 14))
+    label_health2 = tk.Label(ekran2, text=f"Health: {postac2.hp_player}", font=("Arial", 14))
     label_health2.grid(row=3, column=4, padx=10, pady=10)
 
     label_attack1 = tk.Label(ekran2, text=f"Attack power: {postac1.attack_player}", font=("Arial", 14))
@@ -99,7 +99,7 @@ def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
     button_close = tk.Button(ekran2, text="Zamknij", command=ekran2.destroy)
     button_close.grid(row=10, column=2, padx=10, pady=10)
 
-    ############################################### przestrzeń walki v
+    ###################### przestrzeń walki #########################
     # Log akcji
     text_frame = tk.Frame(ekran2)
     text_frame.grid(row=9, column=1, columnspan=4, padx=10, pady=10, sticky="nsew")
@@ -124,7 +124,7 @@ def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
         wybrana_akcja = random.choice(akcje)
         wybrana_akcja()
 
-    # Funkcje dla akcji przeciwnika
+        ############# Funkcje dla akcji przeciwnika #####################
     def atak_przeciwnika():
         obrazenia = oblicz_obrażenia(postac2, postac1)
         dodaj_akcje_log(f"{postac2.name} atakuje {postac1.name} za {obrazenia} punktów obrażeń")
@@ -147,7 +147,7 @@ def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
         if postac1.hp_player <= 0:
             dodaj_akcje_log(f"{postac1.name} został pokonany")
 
-    # Funkcje akcji gracza
+         ###################### Funkcje akcji gracza ####################3
     def atak():
         obrazenia = oblicz_obrażenia(postac1, postac2)
         dodaj_akcje_log(f"{postac1.name} atakuje {postac2.name} za {obrazenia} punktów obrażeń")
@@ -175,7 +175,7 @@ def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
         else:
             akcja_przeciwnika()  # Przeciwnik wykonuje ruch po ruchu gracza
 
-    # Przyciski akcji
+        ################ Przyciski akcji ##############
     button_attack = tk.Button(ekran2, text="Atak", command=atak)
     button_attack.grid(row=6, column=2, padx=10, pady=10)
 
