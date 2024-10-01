@@ -15,16 +15,23 @@ def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
     ekran2.title("Drugie okno")
     ekran2.geometry("800x1000")
 
-    hp_postac1 = postac1.hp_player
-    hp_postac2 = postac2.hp_player
 
     def aktualizuj_hp_label():
         label_health1.config(text=f"Twoje życie: {postac1.hp_player}")
         label_health2.config(text=f"Twoje życie: {postac2.hp_player}")
 
     def oblicz_obrażenia(atakujacy, obronca):
-        obrazenia = max(int(atakujacy.attack_player) - int(obronca.defense_player), 0)  # Obliczanie obrażeń, nie mniej niż 0
-        obronca.hp_player -= max(obrazenia.hp_player - obrazenia, 0) # Odejmowanie HP obrońcy
+        # Konwersja wartości na liczby całkowite przed obliczeniami
+        atak_player = int(atakujacy.attack_player)
+        obrona_player = int(obronca.defense_player)
+        hp_obroncy = int(obronca.hp_player)  # Konwersja HP obrońcy na int
+
+        # Obliczanie obrażeń, ale nie mniej niż 0
+        obrazenia = max(atak_player - obrona_player, 0)
+
+        # Aktualizacja HP obrońcy, nie mniej niż 0
+        obronca.hp_player = max(hp_obroncy - obrazenia, 0)
+
         return obrazenia
 
 
