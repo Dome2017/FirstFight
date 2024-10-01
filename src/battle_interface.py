@@ -1,34 +1,39 @@
 import tkinter as tk
 from tkinter import Scrollbar, Text
 from tkinter.constants import RIGHT
-
+import random
 import requests
 from PIL import Image, ImageTk
 from io import BytesIO
 from src.models.character_model import Character
 from src.models.character_model import Playercharacter
 
-
+#zmienna do śledzenia obrony (flaga obrony)
+is_defending = False
 
 def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
     ekran2 = tk.Toplevel()
     ekran2.title("Drugie okno")
     ekran2.geometry("800x1000")
 
-
     def aktualizuj_hp_label():
         label_health1.config(text=f"Twoje życie: {postac1.hp_player}")
         label_health2.config(text=f"Twoje życie: {postac2.hp_player}")
 
     def oblicz_obrażenia(atakujacy, obronca):
+        global is_defending
         # Konwersja wartości na liczby całkowite przed obliczeniami
         atak_player = int(atakujacy.attack_player)
         obrona_player = int(obronca.defense_player)
         hp_obroncy = int(obronca.hp_player)  # Konwersja HP obrońcy na int
 
+
+
         # Obliczanie obrażeń, ale nie mniej niż 0
         obrazenia = max(atak_player - obrona_player, 0)
-
+        if is_defending:
+            obrazenia = obrazenia // 2  # Zmniejszamy obrażenia o połowę
+            is_defending = False  # Obrona działa tylko przez 1 turę
         # Aktualizacja HP obrońcy, nie mniej niż 0
         obronca.hp_player = max(hp_obroncy - obrazenia, 0)
 
@@ -94,7 +99,7 @@ def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
     button_close = tk.Button(ekran2, text="Zamknij", command=ekran2.destroy)
     button_close.grid(row=10, column=2, padx=10, pady=10)
 
-    ############################################### przestrzeń walki
+    ############################################### przestrzeń walki v
     # Log akcji
     text_frame = tk.Frame(ekran2)
     text_frame.grid(row=9, column=1, columnspan=4, padx=10, pady=10, sticky="nsew")
@@ -111,27 +116,64 @@ def otworz_drugie_okno(postac1: Character, postac2: Playercharacter):
     # Funkcja do wyświetlania akcji walki
     def dodaj_akcje_log(tekst):
         text_log.insert(tk.END,"- " + tekst + "\n")
-        text_log.see(tk.END)  # Automatyczne przewinięcie do ostatniej akcji
+        text_log.see(tk.END)
 
-    # Funkcje akcji
+    def akcja_przeciwnika():
+        # Losowanie akcji przeciwnika
+        akcje = [atak_przeciwnika, obrona_przeciwnika, atak_specjalny_przeciwnika]
+        wybrana_akcja = random.choice(akcje)
+        wybrana_akcja()
+
+    # Funkcje dla akcji przeciwnika
+    def atak_przeciwnika():
+        obrazenia = oblicz_obrażenia(postac2, postac1)
+        dodaj_akcje_log(f"{postac2.name} atakuje {postac1.name} za {obrazenia} punktów obrażeń")
+        aktualizuj_hp_label()
+
+        if postac1.hp_player <= 0:
+            dodaj_akcje_log(f"{postac1.name} został pokonany")
+
+    def obrona_przeciwnika():
+        global is_defending
+        dodaj_akcje_log(f"{postac2.name} przyjmuje pozycję obronną i zablokuje połowę obrażeń w następnym ataku.")
+        is_defending = True
+
+    def atak_specjalny_przeciwnika():
+        obrazenia = oblicz_obrażenia(postac2, postac1) * 1.5
+        dodaj_akcje_log(
+            f"{postac2.name} używa ataku specjalnego przeciwko {postac1.name} za {obrazenia} punktów obrażeń")
+        aktualizuj_hp_label()
+
+        if postac1.hp_player <= 0:
+            dodaj_akcje_log(f"{postac1.name} został pokonany")
+
+    # Funkcje akcji gracza
     def atak():
         obrazenia = oblicz_obrażenia(postac1, postac2)
-        dodaj_akcje_log(f"{postac1.name} atakuje {postac2.name} za {obrazenia} punktów obrażeń ")
+        dodaj_akcje_log(f"{postac1.name} atakuje {postac2.name} za {obrazenia} punktów obrażeń")
         aktualizuj_hp_label()
 
         if postac2.hp_player <= 0:
             dodaj_akcje_log(f"{postac2.name} został pokonany")
+        else:
+            akcja_przeciwnika()  # Przeciwnik wykonuje ruch po ruchu gracza
 
     def obrona():
-        dodaj_akcje_log(f"{postac1.name} broni się!")
+        global is_defending
+        dodaj_akcje_log(f"{postac1.name} przyjmuje pozycję obronną i zablokuje połowę obrażeń w następnym ataku.")
+        is_defending = True
+        akcja_przeciwnika()  # Przeciwnik wykonuje ruch po ruchu gracza
 
     def atak_specjalny():
-        obrazenia = oblicz_obrażenia(postac1, postac2) * 1.5 # atak specjalny zadaje 50% więcej
-        dodaj_akcje_log(f"{postac1.name} używa ataku specjalnego przeciwko {postac2.name} za {obrazenia} punktów obrażeń")
+        obrazenia = oblicz_obrażenia(postac1, postac2) * 1.5  # Atak specjalny zadaje 50% więcej
+        dodaj_akcje_log(
+            f"{postac1.name} używa ataku specjalnego przeciwko {postac2.name} za {obrazenia} punktów obrażeń")
         aktualizuj_hp_label()
 
         if postac2.hp_player <= 0:
             dodaj_akcje_log(f"{postac2.name} został pokonany")
+        else:
+            akcja_przeciwnika()  # Przeciwnik wykonuje ruch po ruchu gracza
 
     # Przyciski akcji
     button_attack = tk.Button(ekran2, text="Atak", command=atak)
