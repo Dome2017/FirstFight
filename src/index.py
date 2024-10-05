@@ -15,8 +15,7 @@ def set_value(napis_przed_input, row, domyslna_wartosc):
     entry = tk.Entry(interface, font=("Arial", 14))
     entry.grid(row=row, column=2, padx=10, pady=10)
     # Ustawienie domyślnej wartości
-    if domyslna_wartosc is not None:
-        entry.insert(0, str(domyslna_wartosc))
+    entry.insert(0, str(domyslna_wartosc))
 
     return entry
 
@@ -65,7 +64,7 @@ fields['hp2'] = set_value('Podaj życie postaci: ', 10, postac2_random_hp)
 fields['attack2'] = set_value('Podaj moc ataku postaci: ', 11, postac2_random_attack)
 fields['defense2'] = set_value("Podaj punkty obrony postaci: ", 12, postac2_random_defense)
 # przycisk otwarcia drugiego okna
-button = tk.Button(interface, text="zaprezentuj postacie", command=zapisz_wartosci)
+button = tk.Button(interface, text="Start Game", command=zapisz_wartosci)
 button.grid(row=14, column=2, pady=20)
 
 
