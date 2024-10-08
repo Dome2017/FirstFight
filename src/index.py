@@ -1,6 +1,6 @@
 import tkinter as tk
 import random
-from battle_interface import otworz_drugie_okno
+from src.views.battle_interface import otworz_drugie_okno
 from src.models.character_model import Character
 from src.models.character_model import Playercharacter
 interface = tk.Tk()
