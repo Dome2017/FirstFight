@@ -2,11 +2,14 @@ from tkinter import Canvas, PhotoImage, Tk
 import tkinter as tk
 from src.models.items import Sword
 
-# definicja itemów
-sword_basic = Sword("Podstawowy miecz",10,10,"../assets/sword_001.png")
-sword_good = Sword ("Dobry miecz",20,20,"../assets/sword_002.png")
-sword_legendary = Sword("Legendarny miecz",50,50,"../assets/sword_003.png")
 
+
+# lista itemów
+swords=[
+    Sword("Podstawowy miecz",10,10,"../assets/sword_001.png"),
+    Sword("Dobry miecz",20,20,"../assets/sword_002.png"),
+    Sword("Legendarny miecz",50,50,"../assets/sword_003.png")
+]
 
 gold = 50
 hp = 100
@@ -16,9 +19,9 @@ defense = 20
 root = Tk()
 root.geometry("1023x834")
 bg = PhotoImage(file="../assets/pixelstorebar.png")
-sword_1 = PhotoImage(file=sword_basic.picture)
-sword_2 = PhotoImage(file=sword_good.picture)
-sword_3 = PhotoImage(file=sword_legendary.picture)
+sword_1 = PhotoImage(file=swords[0].picture)
+sword_2 = PhotoImage(file=swords[1].picture)
+sword_3 = PhotoImage(file=swords[2].picture)
 gold_01 = PhotoImage(file="../assets/gold_01.png")
 canvas1 = Canvas(root)
 canvas1.pack(fill="both", expand=True)
@@ -38,6 +41,13 @@ def buy_item(item:Sword):
         update_gold_amount()
         update_attack()
 
+
+def show_item_in_shop(item:Sword, place_x:int, item_image):
+    item_label = tk.Label(root, text=f"+{item.bonus_attack} attack | Price: {item.cost}", bg='grey', font=("Arial", 12))
+    item_label.place(x=place_x, y=600)
+    item_button = tk.Button(root, image=item_image, command=lambda: buy_item(item))
+    item_button.place(x=place_x - 12, y=640)
+
 # Etykiety wyświetlające statystyki
 statistics = tk.Label(root, text=("STATYSTYKI"), font=("Arail", 16), bg="grey")
 statistics.place(x=50, y=260)
@@ -56,18 +66,10 @@ gold_amount.place(x=870, y=20)
 gold_icon = tk.Label(root, image=gold_01)
 gold_icon.place(x=840, y=16)
 
-# pozycje w sklepie
-
-def show_item_in_shop(item:Sword, place_x:int, place_y:int, item_image):
-    item_label = tk.Label(root, text=f"+{item.bonus_attack} attack | Price: {item.cost}", bg='grey', font=("Arial", 12))
-    item_label.place(x=place_x, y=place_y)
-    item_button = tk.Button(root, image=item_image, command=lambda: buy_item(item))
-    item_button.place(x=place_x - 12, y=place_y + 40)
-
-
-show_item_in_shop(sword_basic,216,600, sword_1)
-show_item_in_shop(sword_good,414,600, sword_2)
-show_item_in_shop(sword_legendary,612,600, sword_3)
+# wywołanie pozycji w sklepie
+show_item_in_shop(swords[0],216, sword_1)
+show_item_in_shop(swords[1],414, sword_2)
+show_item_in_shop(swords[2],612, sword_3)
 
 
 def exit():
