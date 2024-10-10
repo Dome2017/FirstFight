@@ -1,5 +1,11 @@
 from tkinter import Canvas, PhotoImage, Tk
 import tkinter as tk
+from src.models.items import Sword
+
+# definicja itemów
+sword_basic = Sword("Podstawowy miecz",10,10,"../assets/sword_001.png")
+sword_good = Sword ("Dobry miecz",20,20,"../assets/sword_002.png")
+sword_legendary = Sword("Legendarny miecz",50,50,"../assets/sword_003.png")
 
 
 gold = 50
@@ -10,9 +16,9 @@ defense = 20
 root = Tk()
 root.geometry("1023x834")
 bg = PhotoImage(file="../assets/pixelstorebar.png")
-sword_1 = PhotoImage(file="../assets/sword_001.png")
-sword_2 = PhotoImage(file="../assets/sword_002.png")
-sword_3 = PhotoImage(file="../assets/sword_003.png")
+sword_1 = PhotoImage(file=sword_basic.picture)
+sword_2 = PhotoImage(file=sword_good.picture)
+sword_3 = PhotoImage(file=sword_legendary.picture)
 gold_01 = PhotoImage(file="../assets/gold_01.png")
 canvas1 = Canvas(root)
 canvas1.pack(fill="both", expand=True)
@@ -24,11 +30,11 @@ def update_gold_amount():
 def update_attack():
     attack_display.config(text=(f"attack power: {attack}"))
 
-def kup(koszt, dodatkowy_atak):
+def buy_item(item:Sword):
     global gold, attack
-    if gold >= koszt:
-        gold -= koszt
-        attack += dodatkowy_atak
+    if gold >= item.cost:
+        gold -= item.cost
+        attack += item.bonus_attack
         update_gold_amount()
         update_attack()
 
@@ -51,20 +57,17 @@ gold_icon = tk.Label(root, image=gold_01)
 gold_icon.place(x=840, y=16)
 
 # pozycje w sklepie
-info_przycisk_miecz_1 = tk.Label(root, text="+10 attack | Price: 10", bg='grey', font=("Arial", 12))
-info_przycisk_miecz_1.place(x=216, y=600)
-przycisk_miecz_1 = tk.Button(root, image=sword_1, command=lambda: kup(10, 10))
-przycisk_miecz_1.place(x=204, y=640)
 
-info_przycisk_miecz_2 = tk.Label(root, text="+20 attack | Price: 20", bg='grey', font=("Arial", 12))
-info_przycisk_miecz_2.place(x=414, y=600)
-przycisk_miecz_2 = tk.Button(root, image=sword_2, command=lambda: kup(20, 20))
-przycisk_miecz_2.place(x=408, y=640)
+def show_item_in_shop(item:Sword, place_x:int, place_y:int, item_image):
+    item_label = tk.Label(root, text=f"+{item.bonus_attack} attack | Price: {item.cost}", bg='grey', font=("Arial", 12))
+    item_label.place(x=place_x, y=place_y)
+    item_button = tk.Button(root, image=item_image, command=lambda: buy_item(item))
+    item_button.place(x=place_x - 12, y=place_y + 40)
 
-info_przycisk_miecz_3 = tk.Label(root, text="+50 attack | Price: 50", bg='grey', font=("Arial", 12))
-info_przycisk_miecz_3.place(x=618, y=600)
-przycisk_miecz_3 = tk.Button(root, image=sword_3, command=lambda: kup(50, 50))
-przycisk_miecz_3.place(x=612, y=640)
+
+show_item_in_shop(sword_basic,216,600, sword_1)
+show_item_in_shop(sword_good,414,600, sword_2)
+show_item_in_shop(sword_legendary,612,600, sword_3)
 
 
 def exit():
