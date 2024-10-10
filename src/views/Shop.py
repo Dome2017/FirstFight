@@ -19,9 +19,7 @@ defense = 20
 root = Tk()
 root.geometry("1023x834")
 bg = PhotoImage(file="../assets/pixelstorebar.png")
-sword_1 = PhotoImage(file=swords[0].picture)
-sword_2 = PhotoImage(file=swords[1].picture)
-sword_3 = PhotoImage(file=swords[2].picture)
+
 gold_01 = PhotoImage(file="../assets/gold_01.png")
 canvas1 = Canvas(root)
 canvas1.pack(fill="both", expand=True)
@@ -42,10 +40,12 @@ def buy_item(item:Sword):
         update_attack()
 
 
-def show_item_in_shop(item:Sword, place_x:int, item_image):
+def show_item_in_shop(item:Sword, place_x:int):
+    item_image = PhotoImage(file=item.picture)
     item_label = tk.Label(root, text=f"+{item.bonus_attack} attack | Price: {item.cost}", bg='grey', font=("Arial", 12))
     item_label.place(x=place_x, y=600)
     item_button = tk.Button(root, image=item_image, command=lambda: buy_item(item))
+    item_button.image = item_image
     item_button.place(x=place_x - 12, y=640)
 
 # Etykiety wyświetlające statystyki
@@ -66,11 +66,12 @@ gold_amount.place(x=870, y=20)
 gold_icon = tk.Label(root, image=gold_01)
 gold_icon.place(x=840, y=16)
 
-# wywołanie pozycji w sklepie
-show_item_in_shop(swords[0],216, sword_1)
-show_item_in_shop(swords[1],414, sword_2)
-show_item_in_shop(swords[2],612, sword_3)
+# wyświetlenie pozycji w sklepie
 
+start_place_x = 216
+for i in range(len(swords)):
+    show_item_in_shop(swords[i],start_place_x)
+    start_place_x += 200
 
 def exit():
     root.destroy()
