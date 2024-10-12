@@ -19,7 +19,7 @@ def open_second_window():
     main_window.title('FirstFight')
     main_window.geometry('1024x768')
 
-    background_main_window = PhotoImage(file="../assets/ForestBackgroundmain.png")
+    background_main_window = PhotoImage(file="assets/ForestBackgroundmain.png")
 
     canvas_main_window = Canvas(main_window)
     canvas_main_window.pack(fill='both', expand=True)
@@ -27,7 +27,7 @@ def open_second_window():
 
     canvas_main_window.image = background_main_window
 
-    gold_icon = PhotoImage(file='../assets/coin_04.png')
+    gold_icon = PhotoImage(file='assets/coin_04.png')
 
     gold_icon_label = tk.Label(main_window, image=gold_icon )
     gold_icon_label.place(x=900, y=10)
@@ -53,7 +53,7 @@ def open_shop():
     shop_window.title('Shop')
     shop_window.geometry('1024x768')
 
-    shop_background = PhotoImage(file='../assets/storestore.png')
+    shop_background = PhotoImage(file='assets/storestore.png')
 
     canvas_shop = Canvas(shop_window)
     canvas_shop.pack(fill='both', expand=True)
@@ -62,9 +62,9 @@ def open_shop():
     canvas_shop.image = shop_background
 
     swords = [
-        Sword("Podstawowy miecz", 10, 10, "../assets/testsword_001.png"),
-        Sword("Dobry miecz", 20, 20, "../assets/testsword_002.png"),
-        Sword("Legendarny miecz", 50, 50, "../assets/testsword_003.png")
+        Sword("Podstawowy miecz", 10, 10, "assets/testsword_001.png"),
+        Sword("Dobry miecz", 20, 20, "assets/testsword_002.png"),
+        Sword("Legendarny miecz", 50, 50, "assets/testsword_003.png")
     ]
 
 
@@ -104,7 +104,7 @@ def open_shop():
     defense_display = tk.Label(shop_window, text=(f"defense: {defense}"), font=("Ariel", 16), bg="grey")
     defense_display.place(x=30, y=460)
 
-    gold_icon = PhotoImage(file='../assets/coin_04.png')
+    gold_icon = PhotoImage(file='assets/coin_04.png')
 
     gold_icon_label = tk.Label(shop_window, image=gold_icon)
     gold_icon_label.place(x=900, y=10)
@@ -143,7 +143,7 @@ def close_second_window(window):
 interface = tk.Tk()
 interface.title('Interface')
 interface.geometry('500x500')
-bg = PhotoImage(file='ForestBackground.png')
+bg = PhotoImage(file='assets/ForestBackground.png')
 canvas_main = Canvas(interface)
 canvas_main.pack(fill='both', expand=True)
 canvas_main.create_image(0, 0, image=bg, anchor='nw')
