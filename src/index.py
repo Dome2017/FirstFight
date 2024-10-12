@@ -1,71 +1,167 @@
 import tkinter as tk
-import random
-from src.views.battle_interface import otworz_drugie_okno
-from src.models.character_model import Character
-from src.models.character_model import Playercharacter
+from tkinter import Canvas, PhotoImage
+from src.models.items import Sword
+
+main_window = None
+gold = 100
+hp = 100
+attack = 10
+defense = 20
+
+def open_second_window():
+
+    global main_window
+    # Ukryj główne okno
+    interface.withdraw()
+
+
+    main_window = tk.Toplevel()
+    main_window.title('FirstFight')
+    main_window.geometry('1024x768')
+
+    background_main_window = PhotoImage(file="../assets/ForestBackgroundmain.png")
+
+    canvas_main_window = Canvas(main_window)
+    canvas_main_window.pack(fill='both', expand=True)
+    canvas_main_window.create_image(0, 0, image=background_main_window, anchor='nw')
+
+    canvas_main_window.image = background_main_window
+
+    gold_icon = PhotoImage(file='../assets/coin_04.png')
+
+    gold_icon_label = tk.Label(main_window, image=gold_icon )
+    gold_icon_label.place(x=900, y=10)
+    gold_amount = tk.Label(main_window, text=(f": {gold}"), bg='grey', font=("Arial", 16))
+    gold_amount.place(x=940, y=12)
+
+    gold_icon.image = gold_icon
+
+    global welcome_label
+    welcome_label = tk.Label(main_window, text="Witaj w grze FirstFight!", font=("Arial", 24), bg='green')
+    welcome_label.place(x=300, y=100)
+
+    shop_button = tk.Button(main_window, text='Go to the shop', command=open_shop)
+    shop_button.place(x=450, y=250)
+
+    close_button = tk.Button(main_window, text="Zamknij okno", command=lambda: close_second_window(main_window))
+    close_button.place(x=450, y=300)
+
+def open_shop():
+    main_window.withdraw()
+
+    shop_window = tk.Toplevel()
+    shop_window.title('Shop')
+    shop_window.geometry('1024x768')
+
+    shop_background = PhotoImage(file='../assets/storestore.png')
+
+    canvas_shop = Canvas(shop_window)
+    canvas_shop.pack(fill='both', expand=True)
+    canvas_shop.create_image(0, 0, image=shop_background, anchor='nw')
+
+    canvas_shop.image = shop_background
+
+    swords = [
+        Sword("Podstawowy miecz", 10, 10, "../assets/testsword_001.png"),
+        Sword("Dobry miecz", 20, 20, "../assets/testsword_002.png"),
+        Sword("Legendarny miecz", 50, 50, "../assets/testsword_003.png")
+    ]
+
+
+
+    def update_gold_amount():
+        gold_amount.config(text=(f": {gold}"))
+
+    def update_attack():
+        attack_display.config(text=(f"attack power: {attack}"))
+
+    def buy_item(item: Sword):
+        global gold, attack
+        if gold >= item.cost:
+            gold -= item.cost
+            attack += item.bonus_attack
+            update_gold_amount()
+            update_attack()
+
+    def show_item_in_shop(item: Sword, place_x: int):
+        item_image = PhotoImage(file=item.picture)
+        item_label = tk.Label(shop_window, text=f"+{item.bonus_attack} attack | Price: {item.cost}", bg='grey',font=("Arial", 12))
+        item_label.place(x=place_x, y=600)
+        item_button = tk.Button(shop_window, image=item_image, command=lambda: buy_item(item))
+        item_button.image = item_image
+        item_button.place(x=place_x + 26, y=640)
+
+    # Etykiety wyświetlające statystyki
+    statistics = tk.Label(shop_window, text=("STATYSTYKI"), font=("Arail", 16), bg="grey")
+    statistics.place(x=30, y=370)
+
+    hp_display = tk.Label(shop_window, text=(f"health: {hp}"), font=("Ariel", 16), bg="grey")
+    hp_display.place(x=30, y=400)
+
+    attack_display = tk.Label(shop_window, text=(f"attack power: {attack}"), font=("Ariel", 16), bg="grey")
+    attack_display.place(x=30, y=430)
+
+    defense_display = tk.Label(shop_window, text=(f"defense: {defense}"), font=("Ariel", 16), bg="grey")
+    defense_display.place(x=30, y=460)
+
+    gold_icon = PhotoImage(file='../assets/coin_04.png')
+
+    gold_icon_label = tk.Label(shop_window, image=gold_icon)
+    gold_icon_label.place(x=900, y=10)
+    gold_amount = tk.Label(shop_window, text=(f": {gold}"), bg='grey', font=("Arial", 16))
+    gold_amount.place(x=940, y=12)
+
+    gold_icon.image = gold_icon
+
+    # wyświetlenie pozycji w sklepie
+
+    start_place_x = 216
+    for i in range(len(swords)):
+        show_item_in_shop(swords[i], start_place_x)
+        start_place_x += 200
+
+    exit_button = tk.Button(shop_window, text="exit", font=("Ariel", 16), bg="grey", command=lambda: exit_shop(shop_window))
+    exit_button.place(x=50, y=20)
+
+def exit_shop(shop_window):
+    # Ukryj okno sklepu
+    shop_window.destroy()
+    # Pokaż ponownie główne okno gry
+    main_window.deiconify()
+
+
+def close_second_window(window):
+    # Zamknij nowe okno
+    window.destroy()
+
+    # Przywróć główne okno
+    interface.deiconify()
+
+
+# ekran startowy
+
 interface = tk.Tk()
 interface.title('Interface')
-interface.geometry('600x800')
-fields = {}
+interface.geometry('500x500')
+bg = PhotoImage(file='ForestBackground.png')
+canvas_main = Canvas(interface)
+canvas_main.pack(fill='both', expand=True)
+canvas_main.create_image(0, 0, image=bg, anchor='nw')
 
-def set_value(napis_przed_input, row, domyslna_wartosc):
-    label = tk.Label(interface, text=napis_przed_input, font=("Arial", 16))
-    label.grid(row=row, column=1, padx=10, pady=10)
+welcome_label = tk.Label(text='Welcome to the FIRSTFIGHT',font=('Arial',16),bg='green')
+welcome_label.place(x=120,y=100)
 
-    entry = tk.Entry(interface, font=("Arial", 14))
-    entry.grid(row=row, column=2, padx=10, pady=10)
-    # Ustawienie domyślnej wartości
-    entry.insert(0, str(domyslna_wartosc))
+name_label = tk.Label(text='Enter your name:', font=('Arial', 12), bg='green')
+name_label.place(x=100, y=250)
+enter_player_name = tk.Entry(font=('Arial', 12))
+enter_player_name.place(x=250, y=250)
 
-    return entry
+start_game_button = tk.Button(text='Start Game', font=('Arial',16),bg='green', command=open_second_window)
+start_game_button.place(x=190,y=300)
 
-def zapisz_wartosci():
-    # 1 postać
-    player_character1 = Playercharacter
-    player_character1.name = fields['name'].get()  # Pobieramy wartość z pola tekstowego
-    player_character1.picURL = fields['picURL'].get()
-    player_character1.hp_player = fields['hp'].get()
-    player_character1.attack_player = fields['attack'].get()
-    player_character1.defense_player = fields['defense'].get()
-
-    # 2 postać
-    player_character2 = Character
-    player_character2.name = fields['name2'].get()  # Pobieramy wartość z pola tekstowego
-    player_character2.picURL = fields['picURL2'].get()
-    player_character2.hp_player = fields['hp2'].get()
-    player_character2.attack_player = fields['attack2'].get()
-    player_character2.defense_player = fields['defense2'].get()
-
-    # przenosi dane z wyboru dla obu postaci na drugie okno
-    otworz_drugie_okno(player_character1, player_character2)
-
-######################## Definicja ekranu
-
-label = tk.Label(interface, text="Welcome to the FirstFight", font=("Arial", 16))
-label.grid(row=0, column=2, padx=10, pady=10)
-
-# pola tekstowe zapisu dla postaci nr 1
-fields['name'] = set_value('Podaj imie postaci: ', 2,'')
-fields['picURL'] = set_value('Podaj URL zdjęcia postaci: ', 3, 'https://as1.ftcdn.net/v2/jpg/05/78/94/44/1000_F_578944489_ZyfZPsK703HOOx8E08NnacYXyMoG7qJY.jpg')
-fields['hp'] = set_value('Podaj życie postaci: ', 4, 100)
-fields['attack'] = set_value('Podaj moc ataku postaci: ', 5, 50)
-fields['defense'] = set_value("Podaj punkty obrony postaci: ", 6, 20)
-# napis sygnalizujący tworzenie 2 postaci
-label = tk.Label(interface, text="Druga postać", font=("Arial", 16))
-label.grid(row=7, column=2, padx=10, pady=10)
-# możliwe random wartości dla statystyk drugiej postaci
-postac2_random_hp = random.randint(80,200)
-postac2_random_attack = random.randint(5,50)
-postac2_random_defense = random.randint(5,50)
-# pola tekstowe zapisu dla postaci nr 2
-fields['name2'] = set_value('Podaj imie postaci: ', 8, 'Postać 2')
-fields['picURL2'] = set_value('Podaj URL zdjęcia postaci: ', 9, 'https://t3.ftcdn.net/jpg/05/73/92/02/360_F_573920251_veCkGPsuqXwZ8pXOl1WulBjho09F3g7u.jpg')
-fields['hp2'] = set_value('Podaj życie postaci: ', 10, postac2_random_hp)
-fields['attack2'] = set_value('Podaj moc ataku postaci: ', 11, postac2_random_attack)
-fields['defense2'] = set_value("Podaj punkty obrony postaci: ", 12, postac2_random_defense)
-# przycisk otwarcia drugiego okna
-button = tk.Button(interface, text="Start Game", command=zapisz_wartosci)
-button.grid(row=14, column=2, pady=20)
+close_game_button = tk.Button(text='Exit', font=('Arial',16),bg='green', command=exit)
+close_game_button.place(x=230,y=350)
 
 
 interface.mainloop()
+
