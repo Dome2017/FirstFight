@@ -1,5 +1,8 @@
 from dataclasses import dataclass
-
+gold = 100
+hp = 100
+attack = 10
+defense = 20
 
 @dataclass
 class Character:
