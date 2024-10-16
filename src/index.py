@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import Canvas, PhotoImage
-from src.models.character_model import gold
+from src.models.character_model import Character
 from src.views.Shop import open_shop  # Usuń `main_window` z importu
 
 
@@ -24,20 +24,26 @@ def open_second_window():
 
     canvas_main_window.image = background_main_window
 
+    player_name = enter_player_name.get()
+
+    global player_character
+    player_character = Character(player_name,100, 10, 5, 50)
+
     gold_icon = PhotoImage(file='assets/coin_04.png')
 
     gold_icon_label = tk.Label(main_window, image=gold_icon)
     gold_icon_label.place(x=900, y=10)
-    gold_amount_label = tk.Label(main_window, text=(f": {gold}"), bg='grey', font=("Arial", 16))
+    gold_amount_label = tk.Label(main_window, text=(f": {player_character.gold}"), bg='grey', font=("Arial", 16))
     gold_amount_label.place(x=940, y=12)
     gold_icon.image = gold_icon
 
-
-    global welcome_label
     welcome_label = tk.Label(main_window, text="Witaj w grze FirstFight!", font=("Arial", 24), bg='green')
     welcome_label.place(x=300, y=100)
 
-    shop_button = tk.Button(main_window, text='Go to the shop', command=lambda: open_shop(main_window,  gold_amount_label))  # Przekazanie okna jako argument
+    start_first_duel = tk.Button(main_window, text='Begin fight')
+    start_first_duel.place(x=450, y=200)
+
+    shop_button = tk.Button(main_window, text='Go to the shop', command=lambda: open_shop(main_window, gold_amount_label, player_character))  # Przekazanie okna jako argument
     shop_button.place(x=450, y=250)
 
     close_button = tk.Button(main_window, text="Zamknij okno", command=lambda: close_second_window(main_window))
