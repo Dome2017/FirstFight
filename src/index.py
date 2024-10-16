@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import Canvas, PhotoImage
 from src.models.character_model import Character
 from src.views.Shop import open_shop  # Usuń `main_window` z importu
-
+from src.views.battle_interface import open_battle_interface
 
 main_window = None
 gold_amount_label = None
@@ -40,7 +40,7 @@ def open_second_window():
     welcome_label = tk.Label(main_window, text="Witaj w grze FirstFight!", font=("Arial", 24), bg='green')
     welcome_label.place(x=300, y=100)
 
-    start_first_duel = tk.Button(main_window, text='Begin fight')
+    start_first_duel = tk.Button(main_window, text='Begin fight', command=lambda: open_battle_interface())
     start_first_duel.place(x=450, y=200)
 
     shop_button = tk.Button(main_window, text='Go to the shop', command=lambda: open_shop(main_window, gold_amount_label, player_character))  # Przekazanie okna jako argument
