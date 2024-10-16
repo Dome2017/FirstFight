@@ -71,9 +71,9 @@ def open_shop(main_window, gold_amount_label, player_character):
 
     # Wyświetlanie przedmiotów w sklepie
     start_place_x = 216
-    for i in range(len(swords)):
-        show_item_in_shop(swords[i], start_place_x)
-        start_place_x += 200
+    for i, sword in enumerate(swords):
+        show_item_in_shop(sword, start_place_x + (i * 200))
+
 
     # Przycisk wyjścia ze sklepu
     exit_button = tk.Button(shop_window, text="exit", font=("Ariel", 16), bg="grey", command=lambda: exit_shop(shop_window, main_window))
