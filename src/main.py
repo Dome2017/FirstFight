@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import Canvas, PhotoImage
 from src.models.character_model import Character
-from src.views.Shop import open_shop  # Usuń `main_window` z importu
-from src.views.battle_interface import open_battle_interface
+from src.modules.shop.shop_view import open_shop  # Usuń `main_window` z importu
+from src.modules.battle.battle_view import open_battle_interface
 
 main_window = None
 gold_amount_label = None
