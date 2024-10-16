@@ -64,8 +64,8 @@ def open_shop(main_window, gold_amount_label, player_character):
     gold_icon = PhotoImage(file='assets/coin_04.png')
     gold_icon_label = tk.Label(shop_window, image=gold_icon)
     gold_icon_label.place(x=900, y=10)
-    gold_amount = tk.Label(shop_window, text=f": {player_character.gold}", bg='grey', font=("Arial", 16))
-    gold_amount.place(x=940, y=12)
+    gold_amount_label = tk.Label(shop_window, text=f": {player_character.gold}", bg='grey', font=("Arial", 16))
+    gold_amount_label.place(x=940, y=12)
 
     gold_icon.image = gold_icon
 
